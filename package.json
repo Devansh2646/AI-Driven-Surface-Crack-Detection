@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "@vitejs/plugin-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest"
+  }
+}

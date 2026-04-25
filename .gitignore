@@ -1,0 +1,12 @@
+archive/
+archive.zip
+*.ipynb_checkpoints/
+camera_results.txt
+crack_detection_results.csv
+__pycache__/
+.streamlit/
+node_modules/
+dist/
+frontend/dist/
+feedback/
+feedback_tuned.weights.h5
