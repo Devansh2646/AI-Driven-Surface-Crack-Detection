@@ -1,6 +1,6 @@
 ---
 title: Steel Surface Crack Detector
-colorFrom: orange
+colorFrom: red
 colorTo: gray
 sdk: docker
 pinned: false
