@@ -131,18 +131,24 @@ def make_crack_mask(image_rgb: np.ndarray, heatmap: np.ndarray) -> np.ndarray:
     gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
     gray = cv2.GaussianBlur(gray, (3, 3), 0)
 
-    # Normalize local contrast before thresholding so lighting variation
-    # (overexposure, dim conditions, uneven illumination) does not shift the
-    # apparent darkness of the crack relative to the surface background.
-    # clipLimit=2.0 prevents noise amplification; tileGridSize=(8,8) gives
-    # per-region normalization on a 128×128 image (16px tiles).
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    gray = clahe.apply(gray)
+    # Black-hat morphology extracts dark structures whose width is smaller
+    # than the kernel, independent of background brightness. Each pixel's
+    # value becomes "how much darker than its local surroundings" — a
+    # crack on a bright slab and the same crack on a dim slab produce the
+    # same response. This is the standard lighting-invariant filter for
+    # thin dark features (cracks, scratches, vessels). A global percentile
+    # or CLAHE-then-percentile fails because they pick the darkest pixels
+    # everywhere, including non-crack texture in shadowed regions.
+    img_h, img_w = gray.shape
+    kernel_size = max(15, min(img_h, img_w) // 20)
+    if kernel_size % 2 == 0:
+        kernel_size += 1
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernel_size, kernel_size))
+    blackhat = cv2.morphologyEx(gray, cv2.MORPH_BLACKHAT, kernel)
 
-    # Cracks in this dataset are usually the dominant dark connected structure.
-    # Use a strict darkness threshold first to avoid painting every surface texture.
-    dark_cutoff = np.percentile(gray, 24)
-    dark_mask = np.uint8(gray <= dark_cutoff) * 255
+    # Otsu finds the natural cutoff between crack-strength dark response
+    # and background noise without a hand-tuned threshold.
+    _, dark_mask = cv2.threshold(blackhat, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     dark_mask = cv2.morphologyEx(dark_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
     dark_mask = cv2.morphologyEx(dark_mask, cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8), iterations=2)
 
