@@ -131,6 +131,14 @@ def make_crack_mask(image_rgb: np.ndarray, heatmap: np.ndarray) -> np.ndarray:
     gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
     gray = cv2.GaussianBlur(gray, (3, 3), 0)
 
+    # Normalize local contrast before thresholding so lighting variation
+    # (overexposure, dim conditions, uneven illumination) does not shift the
+    # apparent darkness of the crack relative to the surface background.
+    # clipLimit=2.0 prevents noise amplification; tileGridSize=(8,8) gives
+    # per-region normalization on a 128×128 image (16px tiles).
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    gray = clahe.apply(gray)
+
     # Cracks in this dataset are usually the dominant dark connected structure.
     # Use a strict darkness threshold first to avoid painting every surface texture.
     dark_cutoff = np.percentile(gray, 24)
