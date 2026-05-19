@@ -1,12 +1,116 @@
-archive/
-archive.zip
-*.ipynb_checkpoints/
-camera_results.txt
-crack_detection_results.csv
+# ── Python ──────────────────────────────────────────────────────────────────
 __pycache__/
-.streamlit/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+.installed.cfg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ── Node / Frontend ──────────────────────────────────────────────────────────
 node_modules/
 dist/
 frontend/dist/
+.npm
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+*.local
+
+# ── Runtime / Generated ─────────────────────────────────────────────────────
 feedback/
 feedback_tuned.weights.h5
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# ── Jupyter ──────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# ── Streamlit (legacy) ───────────────────────────────────────────────────────
+.streamlit/
+
+# ── Dataset / Archive (not for deployment) ───────────────────────────────────
+archive/
+archive.zip
+*.csv
+camera_results.txt
+
+# ── Testing ──────────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+*.cover
+*.py,cover
+
+# ── Type checking ────────────────────────────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+
+# ── OS artifacts ─────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── IDEs & editors ───────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# ── Secrets & environment ─────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+# (Dockerfile is committed; ignore any local overrides)
+docker-compose.override.yml
